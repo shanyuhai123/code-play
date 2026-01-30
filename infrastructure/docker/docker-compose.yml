@@ -1,0 +1,111 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: code-play-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: codeplay
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - code-play-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: code-play-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - code-play-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../../packages/backend
+      dockerfile: Dockerfile
+    container_name: code-play-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/codeplay?schema=public
+      REDIS_URL: redis://redis:6379
+      SANDBOX_MANAGER_URL: http://sandbox-manager:3001
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../../packages/backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - code-play-network
+    command: pnpm dev
+
+  sandbox-manager:
+    build:
+      context: ../../packages/sandbox-manager
+      dockerfile: Dockerfile
+    container_name: code-play-sandbox-manager
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      REDIS_URL: redis://redis:6379
+      DOCKER_SOCKET_PATH: /var/run/docker.sock
+    ports:
+      - "3001:3001"
+    volumes:
+      - ../../packages/sandbox-manager:/app
+      - /app/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - code-play-network
+    command: pnpm dev
+
+  traefik:
+    image: traefik:v3.0
+    container_name: code-play-traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ../traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ../traefik/dynamic:/etc/traefik/dynamic
+    networks:
+      - code-play-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  code-play-network:
+    driver: bridge

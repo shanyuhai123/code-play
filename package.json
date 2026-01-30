@@ -1,0 +1,31 @@
+{
+  "name": "code-play",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:frontend": "pnpm --filter @code-play/frontend dev",
+    "dev:backend": "pnpm --filter @code-play/backend dev",
+    "dev:sandbox": "pnpm --filter @code-play/sandbox-manager dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "type-check": "pnpm -r type-check",
+    "docker:up": "docker-compose -f infrastructure/docker/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f infrastructure/docker/docker-compose.yml down",
+    "prisma:migrate": "pnpm --filter @code-play/backend prisma migrate dev",
+    "prisma:studio": "pnpm --filter @code-play/backend prisma studio"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.1.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@7.2.5"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: code-play-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: codeplay
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - code-play-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: code-play-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - code-play-network
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: infrastructure/backend/Dockerfile
+    container_name: code-play-backend
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/codeplay?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      GITHUB_CALLBACK_URL: ${GITHUB_CALLBACK_URL}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      SANDBOX_MANAGER_URL: http://sandbox-manager:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - code-play-network
+
+  sandbox-manager:
+    build:
+      context: ../..
+      dockerfile: infrastructure/sandbox-manager/Dockerfile
+    container_name: code-play-sandbox-manager
+    environment:
+      NODE_ENV: production
+      REDIS_URL: redis://redis:6379
+      DOCKER_SOCKET_PATH: /var/run/docker.sock
+      SANDBOX_IMAGE: code-play-sandbox:latest
+    ports:
+      - "3001:3001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - redis
+    networks:
+      - code-play-network
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: infrastructure/frontend/Dockerfile
+    container_name: code-play-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - code-play-network
+
+networks:
+  code-play-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
