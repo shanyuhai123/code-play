@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Project {
+  id           String           @id
+  name         String
+  templateId   String
+  status       String
+  errorMessage String?
+  userId       String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  files        ProjectFile[]
+  sessions     SandboxSession[]
+  tasks        ProjectTask[]
+}
+
+model ProjectFile {
+  id        String   @id
+  projectId String
+  path      String
+  content   String   @db.Text
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, path])
+  @@index([projectId])
+}
+
+model SandboxSession {
+  id          String   @id
+  projectId   String
+  containerId String
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, status])
+}
+
+model ProjectTask {
+  id           String   @id
+  projectId    String
+  type         String
+  status       String
+  output       String?  @db.Text
+  errorMessage String?
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, status])
+}

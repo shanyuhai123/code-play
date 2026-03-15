@@ -1,0 +1,32 @@
+{
+  "name": "@code-play/sandbox",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@code-play/contracts": "workspace:*",
+    "@code-play/domain": "workspace:*",
+    "@code-play/shared": "workspace:*",
+    "@fastify/type-provider-typebox": "^6.1.0",
+    "@fastify/websocket": "^11.0.0",
+    "@sinclair/typebox": "^0.34.48",
+    "dockerode": "^4.0.0",
+    "fastify": "^5.0.0",
+    "nanoid": "^5.0.0",
+    "pino-pretty": "^13.0.0",
+    "tar-stream": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^3.3.0",
+    "@types/node": "^24.10.1",
+    "@types/tar-stream": "^3.1.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.9.3"
+  }
+}

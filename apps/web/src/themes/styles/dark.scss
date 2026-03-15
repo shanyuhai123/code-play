@@ -1,0 +1,77 @@
+html.dark[data-theme="dark"] {
+  color-scheme: dark;
+
+  --cp-page-bg: #0c1222;
+  --cp-surface: #111827;
+  --cp-surface-muted: #1e293b;
+  --cp-surface-soft: #162032;
+  --cp-border: #2a3a52;
+  --cp-border-strong: #3b4f6b;
+  --cp-text-primary: #e5edf6;
+  --cp-text-secondary: #b8c4d6;
+  --cp-text-tertiary: #7f8ea3;
+  --cp-text-inverse: #0f172a;
+  --cp-accent: #60a5fa;
+  --cp-accent-strong: #3b82f6;
+  --cp-accent-soft: rgba(96, 165, 250, 0.16);
+  --cp-topbar-bg: #070d1a;
+  --cp-topbar-text: #e5edf6;
+  --cp-dashboard-panel-bg: color-mix(in srgb, var(--cp-surface) 82%, transparent);
+  --cp-dashboard-panel-border: color-mix(in srgb, var(--cp-border) 85%, transparent);
+  --cp-dashboard-panel-shadow: none;
+  --cp-dashboard-card-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--cp-surface) 96%, transparent),
+    color-mix(in srgb, var(--cp-surface-soft) 88%, transparent)
+  );
+  --cp-dashboard-card-border: color-mix(in srgb, var(--cp-border) 88%, transparent);
+  --cp-dashboard-card-shadow: none;
+  --cp-dashboard-card-hover-shadow: none;
+  --cp-button-primary-text: #08111f;
+  --cp-button-primary-bg: color-mix(in srgb, var(--cp-accent) 92%, white);
+  --cp-button-primary-border: color-mix(in srgb, var(--cp-accent) 92%, white);
+  --cp-button-primary-hover-bg: var(--cp-accent);
+  --cp-button-primary-hover-border: var(--cp-accent);
+  --cp-button-primary-active-bg: var(--cp-accent-strong);
+  --cp-button-primary-active-border: var(--cp-accent-strong);
+
+  --cp-workspace-titlebar-bg: #181818;
+  --cp-workspace-titlebar-text: #cccccc;
+  --cp-workspace-activity-bg: #2b2b2b;
+  --cp-workspace-activity-active: #ffffff;
+  --cp-workspace-activity-inactive: #7a7a7a;
+  --cp-workspace-sidebar-bg: #212121;
+  --cp-workspace-sidebar-title: #bbbbbb;
+  --cp-workspace-content-bg: #1a1a1a;
+  --cp-workspace-text: #cccccc;
+  --cp-workspace-text-muted: #858585;
+  --cp-workspace-border: #3a3a3a;
+  --cp-workspace-hover: #2e3030;
+  --cp-workspace-icon: #c5c5c5;
+  --cp-workspace-highlight: #094771;
+  --cp-workspace-toolbar-bg: rgba(37, 42, 47, 0.88);
+  --cp-workspace-toolbar-border: rgba(148, 163, 184, 0.18);
+  --cp-workspace-toolbar-hover: #2d333b;
+  --cp-workspace-toolbar-active-bg: #0e639c;
+  --cp-workspace-toolbar-active-text: #ffffff;
+  --cp-workspace-toolbar-pill-bg: rgba(255, 255, 255, 0.06);
+
+  --el-color-primary: var(--cp-accent);
+  --el-color-primary-light-3: color-mix(in srgb, var(--cp-accent) 75%, white);
+  --el-color-primary-light-5: color-mix(in srgb, var(--cp-accent) 55%, white);
+  --el-color-primary-light-7: color-mix(in srgb, var(--cp-accent) 35%, white);
+  --el-color-primary-light-8: color-mix(in srgb, var(--cp-accent) 22%, white);
+  --el-color-primary-light-9: color-mix(in srgb, var(--cp-accent) 12%, white);
+  --el-color-primary-dark-2: color-mix(in srgb, var(--cp-accent) 82%, black);
+  --el-bg-color: var(--cp-surface);
+  --el-bg-color-page: var(--cp-page-bg);
+  --el-bg-color-overlay: var(--cp-surface);
+  --el-fill-color-blank: var(--cp-surface);
+  --el-fill-color-light: var(--cp-surface-soft);
+  --el-fill-color-lighter: var(--cp-surface-muted);
+  --el-text-color-primary: var(--cp-text-primary);
+  --el-text-color-regular: var(--cp-text-secondary);
+  --el-text-color-secondary: var(--cp-text-tertiary);
+  --el-border-color: var(--cp-border);
+  --el-border-color-light: color-mix(in srgb, var(--cp-border) 65%, black);
+}

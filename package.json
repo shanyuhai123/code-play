@@ -1,0 +1,23 @@
+{
+  "name": "code-play",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:web": "pnpm --filter @code-play/web dev",
+    "dev:api": "pnpm --filter @code-play/api dev",
+    "dev:sandbox": "pnpm --filter @code-play/sandbox dev",
+    "build": "pnpm -r --if-present build",
+    "test": "pnpm -r test",
+    "lint": "eslint apps packages",
+    "lint:fix": "eslint apps packages --fix",
+    "type-check": "pnpm -r type-check"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.1.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
+  }
+}

@@ -1,0 +1,37 @@
+@import './fonts.css';
+@import '../themes/styles/index.scss';
+
+:root {
+  --cp-font-fallback: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --cp-font-ui: var(--cp-font-fallback);
+}
+
+html.fonts-wenkai-ready {
+  --cp-font-ui: 'LXGW WenKai Lite', var(--cp-font-fallback);
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cp-page-bg);
+  color: var(--cp-text-primary);
+  font-family: var(--cp-font-ui);
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+#app,
+.el-config-provider,
+[class*='el-'] {
+  font-family: var(--cp-font-ui);
+}
